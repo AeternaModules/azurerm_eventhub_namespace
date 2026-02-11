@@ -35,13 +35,13 @@ EOT
     name                          = string
     resource_group_name           = string
     sku                           = string
-    auto_inflate_enabled          = optional(bool, false)
-    capacity                      = optional(number, 1)
+    auto_inflate_enabled          = optional(bool)   # Default: false
+    capacity                      = optional(number) # Default: 1
     dedicated_cluster_id          = optional(string)
-    local_authentication_enabled  = optional(bool, true)
+    local_authentication_enabled  = optional(bool) # Default: true
     maximum_throughput_units      = optional(number)
-    minimum_tls_version           = optional(string, "1.2")
-    public_network_access_enabled = optional(bool, true)
+    minimum_tls_version           = optional(string) # Default: "1.2"
+    public_network_access_enabled = optional(bool)   # Default: true
     tags                          = optional(map(string))
     identity = optional(object({
       identity_ids = optional(set(string))
@@ -50,10 +50,10 @@ EOT
     network_rulesets = optional(object({
       default_action = string
       ip_rule = optional(object({
-        action  = optional(string, "Allow")
+        action  = optional(string) # Default: "Allow"
         ip_mask = string
       }))
-      public_network_access_enabled  = optional(bool, true)
+      public_network_access_enabled  = optional(bool) # Default: true
       trusted_service_access_enabled = optional(bool)
       virtual_network_rule = optional(object({
         ignore_missing_virtual_network_service_endpoint = optional(bool)
