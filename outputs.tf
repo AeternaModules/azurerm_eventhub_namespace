@@ -1,3 +1,7 @@
+output "eventhub_namespaces_id" {
+  description = "Map of id values across all eventhub_namespaces, keyed the same as var.eventhub_namespaces"
+  value       = { for k, v in azurerm_eventhub_namespace.eventhub_namespaces : k => v.id }
+}
 output "eventhub_namespaces_auto_inflate_enabled" {
   description = "Map of auto_inflate_enabled values across all eventhub_namespaces, keyed the same as var.eventhub_namespaces"
   value       = { for k, v in azurerm_eventhub_namespace.eventhub_namespaces : k => v.auto_inflate_enabled }
