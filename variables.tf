@@ -49,26 +49,18 @@ EOT
     }))
     network_rulesets = optional(object({
       default_action = string
-      ip_rule = optional(object({
+      ip_rule = optional(list(object({
         action  = optional(string) # Default: "Allow"
         ip_mask = string
-      }))
+      })))
       public_network_access_enabled  = optional(bool) # Default: true
       trusted_service_access_enabled = optional(bool)
-      virtual_network_rule = optional(object({
+      virtual_network_rule = optional(list(object({
         ignore_missing_virtual_network_service_endpoint = optional(bool)
         subnet_id                                       = string
-      }))
+      })))
     }))
   }))
-  validation {
-    condition = alltrue([
-      for k, v in var.eventhub_namespaces : (
-        v.maximum_throughput_units == null || (v.maximum_throughput_units >= 0 && v.maximum_throughput_units <= 40)
-      )
-    ])
-    error_message = "must be between 0 and 40"
-  }
   # --- Unconfirmed validation candidates, derived from azurerm_eventhub_namespace's provider source ---
   # Not auto-enabled: either a bespoke provider validator we can't safely translate,
   # or a path that crosses a list-typed block (needs its own for_each wrapping).
@@ -103,6 +95,9 @@ EOT
   #   source:    [from commonids.ValidateUserAssignedIdentityID] !ok
   # path: identity.identity_ids[*]
   #   source:    [from commonids.ValidateUserAssignedIdentityID] err != nil
+  # path: maximum_throughput_units
+  #   condition: value >= 0 && value <= 40
+  #   message:   must be between 0 and 40
   # path: network_rulesets.default_action
   #   source:    validation.StringInSlice value list is not a literal []string - likely a generated PossibleValuesFor*() helper; resolve separately
   # path: network_rulesets.virtual_network_rule.subnet_id

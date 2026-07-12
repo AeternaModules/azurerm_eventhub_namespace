@@ -27,7 +27,7 @@ resource "azurerm_eventhub_namespace" "eventhub_namespaces" {
     content {
       default_action = network_rulesets.value.default_action
       dynamic "ip_rule" {
-        for_each = network_rulesets.value.ip_rule != null ? [network_rulesets.value.ip_rule] : []
+        for_each = network_rulesets.value.ip_rule != null ? network_rulesets.value.ip_rule : []
         content {
           action  = ip_rule.value.action
           ip_mask = ip_rule.value.ip_mask
@@ -36,7 +36,7 @@ resource "azurerm_eventhub_namespace" "eventhub_namespaces" {
       public_network_access_enabled  = network_rulesets.value.public_network_access_enabled
       trusted_service_access_enabled = network_rulesets.value.trusted_service_access_enabled
       dynamic "virtual_network_rule" {
-        for_each = network_rulesets.value.virtual_network_rule != null ? [network_rulesets.value.virtual_network_rule] : []
+        for_each = network_rulesets.value.virtual_network_rule != null ? network_rulesets.value.virtual_network_rule : []
         content {
           ignore_missing_virtual_network_service_endpoint = virtual_network_rule.value.ignore_missing_virtual_network_service_endpoint
           subnet_id                                       = virtual_network_rule.value.subnet_id
