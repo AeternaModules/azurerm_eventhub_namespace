@@ -23,7 +23,7 @@ resource "azurerm_eventhub_namespace" "eventhub_namespaces" {
   }
 
   dynamic "network_rulesets" {
-    for_each = each.value.network_rulesets != null ? [each.value.network_rulesets] : []
+    for_each = each.value.network_rulesets != null ? each.value.network_rulesets : []
     content {
       default_action = network_rulesets.value.default_action
       dynamic "ip_rule" {
